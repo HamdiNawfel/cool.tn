@@ -18,7 +18,7 @@ import Title from '../../utils/Title'
 import Appbar from '../../utils/Appbar'
 import Footer from '../../utils/Footer'
 //images
-import heroImage from './assets/heroImage.jpg'
+import heroImage from './assets/heroo.jpg'
 //Icons
 
 

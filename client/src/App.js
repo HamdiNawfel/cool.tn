@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect} from "react-router-do
 import home from './pages/home/index'
 // import Profile from './pages/profile/index'
 import ShoppingCard from './pages/shoppingCard/index'
+import Success from './pages/success/index'
 import Auth from './features/auth/index'
 //utils
 import PrivateRoute from './utils/PrivateRoute';
@@ -41,6 +42,7 @@ function App() {
             <Route exact path="/" component={home} />
             <Route exact path="/shopping-card" component={ShoppingCard} />
             <Route exact path="/login" component={Auth} />
+            <Route exact path="/success" component={Success} />
             {/* <PrivateRoute exact path="/profile" component={Profile} /> */}
           </Switch>
         </div>

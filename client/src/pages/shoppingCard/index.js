@@ -19,6 +19,8 @@ import Filter from './components/Filter';
 import Products from './components/Products';
 import Cart from './components/Cart';
 import ShippingDate from './components/ShippingDate';
+import Paypal from './components/Paypal';
+import Cash from './components/Cash';
 
 //redux set up
 import { connect } from 'react-redux';
@@ -171,9 +173,23 @@ function ShoppingCard(props) {
   </div>:null
   //payment step
   const paymentMarkup = uiStep ==='payment'?
-  <div>
-     payment
-  </div>:null
+  <Grid>
+    <Paypal />
+    <Grid container style={{margin:'30px 0'}}>
+      <Grid item xs={2} sm={5} style={{marginTop:8}}>
+          <Divider />
+      </Grid>
+      <Grid item xs={8}sm={2}>
+          <Typography style={{verticalAlign:'top', textAlign:'center'}}>Ou</Typography>
+      </Grid>
+      <Grid item xs={2} sm={5} style={{marginTop:8}}>
+        <Divider />
+      </Grid>
+    </Grid>
+    <Grid>
+      <Cash />
+    </Grid>
+  </Grid>:null
   return (
     <div className={classes.root} >
       <CssBaseline />

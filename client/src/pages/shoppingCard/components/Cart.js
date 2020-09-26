@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
        padding:'30px 0'
     },
     clearAllBtn:{
-       marginLeft:180
+       marginLeft:220
     },
     total: {
         padding:10,

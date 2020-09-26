@@ -65,7 +65,7 @@ app.post('/paypal', (req, res) => {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://localhost:8080/success",
+        "return_url": "http://localhost:3000/success",
         "cancel_url": "http://localhost:8080/cancel"
     },
     "transactions": [{

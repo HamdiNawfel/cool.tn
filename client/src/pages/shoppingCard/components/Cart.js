@@ -1,5 +1,6 @@
 import React , { useState }from 'react'
 import axios from 'axios';
+import moment from 'moment'
 //Mui
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,6 +12,8 @@ import Card from '@material-ui/core/Card';
 import { Alert, AlertTitle } from '@material-ui/lab';
 //util
 import InputText from '../../../utils/InputText'
+//components
+import ShippingDate from './ShippingDate';
 //icons
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
@@ -18,8 +21,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 //redux set up
 import { connect } from 'react-redux';
 import { addToCart, subQuantity, removeItem, clearAll} from '../../../redux/actions/dataAction'
-
-
+import { nextStep } from '../../../redux/actions/uiAction'
 
 const useStyles = makeStyles((theme) => ({
     Card:{
@@ -61,14 +63,14 @@ const useStyles = makeStyles((theme) => ({
     total: {
         padding:10,
         marginTop:20,
+        marginBottom:20,
         margin:5,
         width:'95%',
-        color:'#ffa400',
         backgroundColor:'#fff',
         borderRadius:'2rem',
         border: `1px solid #ffa400`,
     },
-    checkoutBtn:{
+    nextBtn:{
         padding:12,
         marginTop:15,
         marginBottom:15,
@@ -76,9 +78,6 @@ const useStyles = makeStyles((theme) => ({
         width:'95%',
         color:'#fff',
         backgroundColor:'#ffa400',
-        '&:hover': {
-            boxShadow: '0 0 10px #ffa400, 0 0 20px #ffa400, 0 0 60px #ffa400',
-         },
         borderRadius:'2rem',
         border: `1px solid #ffa400`,
         textTransform:'uppercase',
@@ -87,24 +86,38 @@ const useStyles = makeStyles((theme) => ({
         outline: 'none',
         cursor:'pointer',
     },
+    desabledBtn:{
+      opacity:0.3,
+      padding:12,
+        marginTop:15,
+        marginBottom:15,
+        margin:5,
+        width:'95%',
+        color:'#fff',
+        backgroundColor:'#ffa400',
+        borderRadius:'2rem',
+        border: `1px solid #ffa400`,
+        textTransform:'uppercase',
+        fontWeight:600,
+        transition: '0.2s',
+        outline: 'none',
+       
+    },
     checkoutIcon:{
         verticalAlign:'sub',
         marginTop:5
     },
-    inputText: {
-        margin: 10,
-        width:'93%',
-        
+    date:{
+        width:'95%',
+        backgroundColor:'#fff',
+        padding:10,
+        border: `1px solid #ffa400`,
+        borderRadius:'2rem',
+        margin:5,
     }
   }));
 function Cart(props) {
   const classes = useStyles();
- const [visible, setVisible ] = useState(false);
- const [email, setEmail ] = useState('');
- const [phone, setPhone ] = useState('');
- const [location, setLocation ] = useState('');
- const [success, setSuccess ] = useState(false);
- const [sended, setSended ] = useState(false);
 
   const handleAddToCart = (id)=>{
     props.addToCart(id); 
@@ -114,28 +127,18 @@ function Cart(props) {
  }
  const handleRemoveItem = (id)=>{
     props.removeItem(id)
-    console.log(email)
  }
  const handleClearAll = ()=>{
     props.clearAll()
  }
- const handleSubmit = (e) => {
-    e.preventDefault();
-   let orderData = {
-        email,
-        phone,
-        location,
-        cart:props.data.addedItems,
-        total:props.data.total
-    }
-    axios.post("/api/order", orderData)
-     .then(res =>setSuccess(true))
-     .catch(err =>setSuccess(false))
-    setEmail('');
-    setPhone('');
-    setLocation('');
-    setSended(true);
+
+ const handleNextStep = () => {
+     props.nextStep();
+     if(props.drawer){
+         props.drawer();
+     }
  }
+  
   const { addedItems} = props.data
   const cartMarkup = addedItems.length > 0? 
   <div>
@@ -176,7 +179,7 @@ function Cart(props) {
            )
       }
       {/* <Divider style={{marginTop:20}}/> */}
-     
+        
         <Grid container className={classes.total}>
             <Grid item xs={6}>
                 <Typography style={{textTransform:'uppercase',fontWeight:600, textAlign:'start'}}>
@@ -189,59 +192,28 @@ function Cart(props) {
                 </Typography>
             </Grid>
         </Grid>
-        <button className={classes.checkoutBtn} onClick={()=>setVisible(true)} style={{display:`${visible?"none":"inline"}`}}>
-            commander
+        {props.shop.shippingDate !==''?<Grid container className={classes.date}>
+            <Grid item xs={3}>
+               <Typography style={{textTransform:'uppercase',fontWeight:'600', textAlign:'start'}}>
+               Délivré: 
+                </Typography>
+            </Grid>
+            <Grid item xs={9}>
+            <Typography style={{textTransform:'uppercase',fontWeight:'600', textAlign:'end'}}>
+            {moment(props.shop.shippingDate).calendar()}
+                </Typography>
+            
+            </Grid>
+        </Grid>:null}
+        <button 
+           className={props.ui.uiStep==='shipping' && props.shop.shippingDate ===''?classes.desabledBtn: classes.nextBtn}
+           disabled={props.ui.uiStep==='shipping' && props.shop.shippingDate ===''} 
+           onClick={()=>handleNextStep()}>
+          continuer
         </button>
-        <Slide direction="up" in={visible} mountOnEnter unmountOnExit>
-        <div>
-            <form onSubmit={handleSubmit}>
-                <InputText  
-                   type="email"
-                    autoFocus
-                    required
-                    placeholder="Entrer Votre Email..."
-                    className={classes.inputText}
-                    value={email}
-                    onChange={(e)=>setEmail(e.target.value)}
-                    
-                />
-                <InputText  
-                    type="tel"
-                    required
-                    placeholder="Entrer Votre Télephone..."
-                    className={classes.inputText}
-                    value={phone}
-                    onChange={(e)=>setPhone(e.target.value)}
-                />
-                <InputText  
-                    required
-                    placeholder="Entrer Votre Adresse..."
-                    className={classes.inputText}
-                    value={location}
-                    onChange={(e)=>setLocation(e.target.value)}
-                />
-           
-                <button className={classes.checkoutBtn} type="submit">
-                    Envoyer
-                </button>
-            </form>
-        </div>
-        </Slide>
-        <Slide direction="up" in={sended} mountOnEnter unmountOnExit>
-        {success?<Alert severity="success" onClose={handleClearAll}>
-                <AlertTitle>Merci</AlertTitle>
-                Votre commande a été envoyé avec<strong> succès</strong>
-                </Alert>:
-                <Alert severity="error">
-                <AlertTitle>Désolé</AlertTitle>
-                Veuillez vérifier votre connexion Internet et <strong>réessayer</strong>
-            </Alert>}
-        </Slide>
   </div>:<Typography style={{fontWeight:600, margin:'100px auto',textAlign:'center'}}>
     Votre pannier est vide!
   </Typography>
-      
-
     return (
         <div>
             {cartMarkup}     
@@ -250,14 +222,17 @@ function Cart(props) {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.data
+    data: state.data,
+    ui : state.ui,
+    shop: state.shop
   });
   
   const mapActionsToProps =   {
     addToCart,
     subQuantity,
     removeItem,
-    clearAll
+    clearAll,
+    nextStep
   };
   
   export default connect(

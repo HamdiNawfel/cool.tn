@@ -7,34 +7,33 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
-
-
-
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 //icons
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-//
-import Filter from './components/Filter'
-import Products from './components/Products'
-import Cart from './components/Cart'
+// components
+import Filter from './components/Filter';
+import Products from './components/Products';
+import Cart from './components/Cart';
+import ShippingDate from './components/ShippingDate';
+
 //redux set up
 import { connect } from 'react-redux';
 import { getAllProducts } from '../../redux/actions/dataAction'
-import { Grid } from '@material-ui/core';
-const drawerWidth = 330;
+import { nextStep, setStep} from '../../redux/actions/uiAction'
 
+
+const drawerWidth = 360;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     minWidth:360,
-    // overflowY:'hidden'
-    // position:'fixed',
     top:0,
   },
   appBar: {
-    
     width: `calc(100% - ${drawerWidth}px)`,
     marginRight: drawerWidth,
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -72,18 +71,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
-   
   },
   produtList:{
     marginTop:100
-  },
-  //logo
-  logo: {
-    fontWeight:900,
-   marginLeft:50,
-   [theme.breakpoints.down('md')]: {
-    marginLeft:5,
-  },
   },
   bagItem:{
     margin:5,
@@ -112,15 +102,16 @@ const useStyles = makeStyles((theme) => ({
     bottom:'0px',
     height:100,
   },
-  title: {
+  logo: {
    fontWeight:900,
    padding:'0 10px 0 10px',
    color:' #fff',
    backgroundColor:'#ffa400',
-   marginLeft:10,
-   boxShadow: '0 0 40px #ffa400, 0 0 20px #ffa400, 0 0 60px #ffa400',
-   [theme.breakpoints.up('md')]: {
-    marginLeft:50,
+   marginLeft:50,
+   boxShadow: '0 0 10px #ffa400, 0 0 20px #ffa400, 0 0 60px #ffa400',
+   [theme.breakpoints.down('sm')]: {
+    display:'none',
+
   },
   },
   mobileCartIcon: {
@@ -129,29 +120,79 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('md')]: {
       display:'flex',
     },
-  }
+  },
+  date:{
+    textAlign:'center',
+    width:300,
+    margin:'20px auto'
+  },
+  text: {
+    fontWeight:600,
+    marginTop:5,
+    width:'65%',
+    margin:'auto',
+    textAlign:'center',
+    [theme.breakpoints.down('sm')]: {
+      width:'100%',
+    },
+  },
 }));
 
-function PermanentDrawerRight(props) {
-  const classes = useStyles();
-  const [ drawer, setDrawer ] = useState('temporary')
-  const { getAllProducts } = props;
-  useEffect(()=>{
-    getAllProducts()
-  },[getAllProducts])
+function ShoppingCard(props) {
   
+  const classes = useStyles();
+  const [ drawer, setDrawer ] = useState('temporary');
+  // shopping step
+  const { getAllProducts, nextStep, setStep } = props;
+  useEffect(()=>{
+    getAllProducts();
+    setStep('shopping');
+  },[getAllProducts]);
+
+  const handleSetStep = (step) => {
+    props.setStep(step);
+}
+  const { uiStep } = props.ui
+  const shoppingMarkup = uiStep ==='shopping'?
+  <div>
+   <Filter/> 
+   <Products />
+  </div>:null
+  // date step
+  const dateMarkup = uiStep ==='shipping'?
+  <div>
+     <Typography component="h1" variant="h5" className={classes.text}color="textSecondary">
+     Sélectionnez une date de livraison valide.
+      </Typography>
+      <Typography component="h1" variant="h5" className={classes.text}color="textSecondary">
+      Le temps de livraison est estimé à <span style={{ color:'#edaf07'}}> 30 minute.</span>
+      </Typography>
+    <div className={classes.date}><ShippingDate  drawer={()=>setDrawer('permanent')}/></div>
+  </div>:null
+  //payment step
+  const paymentMarkup = uiStep ==='payment'?
+  <div>
+     payment
+  </div>:null
   return (
     <div className={classes.root} >
       <CssBaseline />
       <AppBar position="fixed" color="inherit" elevation={0} className={classes.appBar}>
         <Toolbar>
          <Link href="/" style={{color:'inherit', textDecoration:'none'}} >
-         <Typography className={classes.title} variant="h6">
+         <Typography className={classes.logo} variant="h6">
             cool
           </Typography>
          </Link>
          <div style={{flexGrow:1}}/>
-         <Filter/> 
+         <div>
+            <Button onClick={()=>handleSetStep('shopping')}>Menu</Button>
+            <ChevronRightIcon style={{ opacity:0.3, verticalAlign:'middle'}}/>
+            <Button disabled={ props.shop.shippingDate ===''} onClick={()=>handleSetStep('shipping')}>Date</Button>
+            <ChevronRightIcon style={{ opacity:0.3, verticalAlign:'middle' }}/>
+            <Button disabled={uiStep !== 'payment'}onClick={()=>handleSetStep('payment')}>Paiement</Button>
+         </div>
+         <div style={{flexGrow:1}}/>
          <Badge badgeContent={props.data.count} color="primary" 
          invisible={props.data.total === 0?true:false}
          className={classes.mobileCartIcon}
@@ -162,8 +203,9 @@ function PermanentDrawerRight(props) {
       </AppBar>
       <main className={classes.content} >
         <div className={classes.toolbar} />
-       
-        <Products />
+        { shoppingMarkup }
+        { dateMarkup }
+        { paymentMarkup }
       </main>
       <Drawer
         className={classes.Mobiledrawer}
@@ -189,7 +231,7 @@ function PermanentDrawerRight(props) {
           <Divider />
         </div>
         <div style={{position:'relative', top:80}}>
-          <Cart />
+          <Cart drawer={()=>setDrawer('temporary')}/>
         </div>
       </Drawer>
       {/* desktop drawer */}
@@ -219,15 +261,15 @@ function PermanentDrawerRight(props) {
 }
 const mapStateToProps = (state) => ({
   data: state.data,
-  
+  ui : state.ui,
+  shop: state.shop
 });
-
-
-
 const mapActionsToProps = {
-  getAllProducts
+  getAllProducts,
+  nextStep,
+  setStep
 };
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(PermanentDrawerRight);
+)(ShoppingCard);

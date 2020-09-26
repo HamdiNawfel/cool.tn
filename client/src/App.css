@@ -4,3 +4,14 @@ html, body {
   overflow-y: auto;
   
 }
+.btnFacebook { 
+  width: 100% !important;
+  height:45px;  
+  border-radius: 4px;
+  background: #3b5998;
+  color:white;
+  border:0px transparent;  
+  text-align: left;
+  display: inline-block;
+  cursor: pointer;
+}

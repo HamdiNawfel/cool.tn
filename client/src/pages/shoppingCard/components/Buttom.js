@@ -10,7 +10,7 @@ import styled from 'styled-components';
   border-color:${(props)=>props.active?"#ffa400":"#2a2a72"};
   
   color:${props=>props.active?"#2a2a72": "#009ffa"};
-  border-radius: 5px;
+  
   padding: 0.3rem 0.3rem;
   cursor: pointer;
   margin: 0.2rem;

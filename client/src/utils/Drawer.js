@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import clsx from 'clsx';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   closeIcon: {
     margin:8,
+    float:'right',
     '&:hover': {
       color: fade('#cf7500', 1),
     },
@@ -50,50 +51,45 @@ const useStyles = makeStyles((theme) => ({
 
 function NestedList(props) {
   const classes = useStyles();
-  
+  const [isAuthenticated, setyIsAuthenticated] = React.useState(false);
+ 
+  useEffect(()=>{
+    if(localStorage.length !== 0){
+      setyIsAuthenticated(true)
+    }
+  },[]) 
 
   return (
     <List
       component="nav"
       aria-labelledby=""
       subheader={
-        <Grid container>
-          <Grid item xs={10}>
-            <ListSubheader component="div" id="nested-list-subheader" className={classes.title}>
-             CATÉGORIE
-            </ListSubheader>
-          </Grid>
-          <Grid item xs={2} >
-            <CloseIcon  className={classes.closeIcon} onClick={props.close} />
-          </Grid>
-          
-          
-          <Divider />
-        </Grid>
-      
-       
+        <CloseIcon  className={classes.closeIcon} onClick={props.close} />
       }
       className={classes.root}
     >
       <ListItem button>
         <Link href='/products'color="inherit" underline="none">
-          <ListItemText primary="VIENNOISERIES" className={classes.hover}/>
+          <ListItemText primary="COMMANDER" className={classes.hover}/>
         </Link>
       </ListItem>
       <ListItem button>
-        <Link href='/products'color="inherit" underline="none">
-          <ListItemText primary="BOULANGERIE" className={classes.hover}/>
+        <Link href='/'color="inherit" underline="none">
+          <ListItemText primary="FOR BUSINESS" className={classes.hover}/>
         </Link>
       </ListItem>
       <ListItem button>
-        <Link href='/products'color="inherit" underline="none">
-          <ListItemText primary="DÉLICES SALÉS" className={classes.hover}/>
+        <Link href='/'color="inherit" underline="none">
+          <ListItemText primary="CONTACT" className={classes.hover}/>
         </Link>
       </ListItem>
       <ListItem button>
-        <Link href='/products'color="inherit" underline="none">
-          <ListItemText primary="BOISSONS FRAÎCHES" className={classes.hover}/>
-        </Link>
+       {!isAuthenticated? <Link href='/login'color="inherit" underline="none">
+          <ListItemText primary="CONNECTION" className={classes.hover}/>
+        </Link>:
+        <Link href='/profile'color="inherit" underline="none">
+          <ListItemText primary="PROFILE" className={classes.hover}/>
+        </Link>}
       </ListItem>
       
     </List>

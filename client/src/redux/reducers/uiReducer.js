@@ -1,40 +1,38 @@
-import {
-    SET_ERRORS,
-    CLEAR_ERRORS,
-    LOADING_UI,
-    STOP_LOADING_UI
-  } from '../types';
+import { 
+  GET_ERRORS,
+  NEXT_STEP,
+  SET_STEP,
+  SET_ERROR,
+  SET_SUCCESS
+ } from '../types';
   
   const initialState = {
-    loading: false,
-    errors: {}
+    errors:{},
+    steps : ['shopping', 'shipping', 'payment'],
+    uiStep:'',
+    error:false,
+    success:false
   };
-  
+ 
   export default function(state = initialState, action) {
     switch (action.type) {
-      case SET_ERRORS:
+      case GET_ERRORS:
         return {
-          ...state,
-          loading: false,
-          errors: action.payload
-        };
-      case CLEAR_ERRORS:
+        errors : action.payload
+       }
+       case SET_STEP:
         return {
-          ...state,
-          loading: false,
-          errors: {}
-        };
-      case LOADING_UI:
+        ...state,
+        uiStep: action.payload
+       }
+       case NEXT_STEP:
+        let index = state.steps.indexOf(state.uiStep);
         return {
-          ...state,
-          loading: true
-        };
-      case STOP_LOADING_UI:
-        return {
-          ...state,
-          loading: false
-        };
+        ...state,
+        uiStep: state.steps[index +1]
+       }
       default:
         return state;
     }
   }
+

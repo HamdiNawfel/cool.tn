@@ -10,7 +10,7 @@ import {
 //Sign up user
   export const signupUser = (userData) => dispatch => {
     axios
-      .post("http://localhost:8080/api/signup", userData)
+      .post("/api/signup", userData)
       .then(res => {
         const { token } = res.data;
         localStorage.setItem("jwtToken", token);
@@ -32,7 +32,7 @@ import {
   // Login - get user token
 export const loginUser = userData => dispatch => {
     axios
-      .post("http://localhost:8080/api/login", userData)
+      .post("/api/login", userData)
       .then(res => {
         // Save to localStorage
   // Set token to localStorage
@@ -56,7 +56,7 @@ export const loginUser = userData => dispatch => {
  // Login with GOOGLE - get user token
  export const authUser = userData => dispatch => {
   axios
-    .post("http://localhost:8080/api/auth", userData)
+    .post("/api/auth", userData)
     .then(res => {
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
@@ -104,7 +104,7 @@ export const getUser = () => dispatch => {
   dispatch(setCurrentUser(decoded));
   const userId = decoded.userId;
   axios
-    .get(`http://localhost:8080/api/user/${userId}`)
+    .get(`/api/user/${userId}`)
     .then((res) => {
       dispatch({
         type: GET_ORDER,

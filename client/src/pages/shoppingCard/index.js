@@ -176,7 +176,7 @@ function ShoppingCard(props) {
 
 useEffect(() => {
   if(props.location.search !== ''){
-    axios.get(`http://localhost:8080/api/order/success${props.location.search}`)
+    axios.get(`/api/order/success${props.location.search}`)
       .then((res) =>{
         setSuccess(true)
       })

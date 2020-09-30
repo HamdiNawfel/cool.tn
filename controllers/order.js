@@ -55,8 +55,8 @@ exports.postPaypal = (req, res, next) => {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://localhost:3000/shopping-card",
-        "cancel_url": "http://localhost:8080/cancel"
+        "return_url": "/shopping-card",
+        "cancel_url": "/cancel"
     },
     "transactions": [{
         "item_list": {

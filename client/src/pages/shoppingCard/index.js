@@ -175,15 +175,15 @@ function ShoppingCard(props) {
 }
 
 useEffect(() => {
-  axios.get(`http://localhost:8080/api/order/success${props.location.search}`)
-  .then((res) =>{
-    console.log(res);
-    setSuccess(true)
-  })
-  .catch((err) =>{
-    console.log(err);
-  })
-
+  if(props.location.search !== ''){
+    axios.get(`http://localhost:8080/api/order/success${props.location.search}`)
+      .then((res) =>{
+        setSuccess(true)
+      })
+      .catch((err) =>{
+        console.log(err);
+      })
+  }
 }, [lodingPaypal]);
   const { uiStep } = props.ui
   const shoppingMarkup = uiStep ==='shopping'?
@@ -223,9 +223,13 @@ useEffect(() => {
   </Grid>:null
   // success
  const successMarkup = <div className={classes.root}>
- <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+ <Snackbar 
+   open={success} 
+   anchorOrigin={{ vertical: 'top', horizontal: 'center'}}
+   autoHideDuration={6000}
+    onClose={handleClose}>
    <Alert onClose={handleClose} severity="success">
-     This is a success message!
+   Paiement est effectué avec succès
    </Alert>
  </Snackbar>
  </div>

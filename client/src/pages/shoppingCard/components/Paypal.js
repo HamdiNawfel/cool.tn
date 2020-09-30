@@ -61,7 +61,7 @@ function Paypal(props) {
   const classes = useStyles();
  
   const handlePayment = () => {
-    const paymentData = {}
+    const paymentData = props.data.addedItems
     props.paypal(paymentData);
   }
   return (
@@ -87,7 +87,8 @@ function Paypal(props) {
 const mapStateToProps = (state) => ({
   user: state.user,
   ui: state.ui,
-  shop: state.shop
+  shop: state.shop,
+  data: state.data
 });
 const mapActionsToProps = {
  paypal

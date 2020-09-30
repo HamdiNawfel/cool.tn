@@ -67,12 +67,11 @@ function NestedList(props) {
         <CloseIcon  className={classes.closeIcon} onClick={props.close} />
       }
       className={classes.root}
-    >
+    > <Link href='/shopping-card'color="inherit" underline="none">
       <ListItem button>
-        <Link href='/products'color="inherit" underline="none">
-          <ListItemText primary="COMMANDER" className={classes.hover}/>
-        </Link>
+          <ListItemText primary="MENU" className={classes.hover}/>
       </ListItem>
+      </Link>
       <ListItem button>
         <Link href='/'color="inherit" underline="none">
           <ListItemText primary="FOR BUSINESS" className={classes.hover}/>

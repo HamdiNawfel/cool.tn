@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cta: {
     position:'relative',
-     top:'-350px',
+     top:'-400px',
      textAlign:'start',
     display: 'inline-block',
     margin:'0 auto',
@@ -47,6 +47,25 @@ const useStyles = makeStyles((theme) => ({
       top:'-70px',
       width:'90%',
     }
+  },
+  ctaButton:{
+    padding:12,
+      marginTop:15,
+      marginBottom:10,
+      
+      width:'100%',
+      color:'#fff',
+      backgroundColor:'#ffa400',
+      '&:hover': {
+          boxShadow: '0 0 10px #ffa400, 0 0 20px #ffa400, 0 0 60px #ffa400',
+       },
+      borderRadius:'2rem',
+      border: `1px solid #ffa400`,
+      textTransform:'uppercase',
+      fontWeight:600,
+      transition: '0.2s',
+      outline: 'none',
+      cursor:'pointer',
   },
   actions: {
     marginTop:40
@@ -140,13 +159,13 @@ export default function Home() {
     <div>
       <Appbar />
       <div className={classes.hero}>
-        <img src={heroImage} style={{width:'100%', height:'auto'}} alt="break fasty"/>
+        <img src={heroImage} style={{width:'100%', height:'auto'}} alt="cool"/>
         <div className={classes.cta}>
-          <Title title="Rester protéger et commander votre petit-déjeuner." />
+          <Title title="Se protéger de Covid-19, Restez chez vous et commander votre Plat ou petit petit dejeuner." />
           <Link href="/products">
-            <ButtonContainer active style={{marginTop:30}}>
+            <button className={classes.ctaButton}>
                 VOIR NOTRE MENU!
-            </ButtonContainer>
+            </button>
           </Link>
         </div>
     </div>

@@ -55,7 +55,7 @@ exports.postPaypal = (req, res, next) => {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://localhost:8080/success",
+        "return_url": "http://localhost:3000/shopping-card",
         "cancel_url": "http://localhost:8080/cancel"
     },
     "transactions": [{
@@ -120,7 +120,7 @@ exports.paypalSuccess = (req, res, next) => {
                 email: user.email,
                 shipping_address: payment.payer.payer_info.shipping_address,
                 item_list:  payment.transactions.item_list,
-                total: payment.transactions[0].total
+                total: payment.transactions[0].amount.total
               });
               newOrder.save()
                 .then((result) => {
@@ -142,7 +142,7 @@ exports.paypalSuccess = (req, res, next) => {
                           email: user.email,
                           shipping_address: payment.payer.payer_info.shipping_address,
                           item_list:  payment.transactions.item_list,
-                          total: payment.transactions[0].total
+                          total: payment.transactions[0].amount.total
                         });
                         newOrder.save()
                           .then((result) => {

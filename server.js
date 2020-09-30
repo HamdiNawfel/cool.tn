@@ -78,7 +78,7 @@ app.get('/success', (req, res) => {
         console.log(error.response);
         throw error;
     } else {
-        console.log(payment.transactions[0].total);
+        console.log(payment.payer.payer_info);
         res.send('Success');
     }
 });

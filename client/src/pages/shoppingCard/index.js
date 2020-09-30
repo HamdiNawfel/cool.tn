@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'
+//Mui
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -11,6 +13,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert'
 //icons
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -93,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
   marginTop:10,
   marginLeft:5
   },
-  commandeButton: {
+    commandeButton: {
     borderTop: `1px solid ${theme.palette.divider}`,
     display:'block',
     position:"fixed",textAlign:'center',
@@ -139,11 +143,26 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 function ShoppingCard(props) {
   
   const classes = useStyles();
   const [ drawer, setDrawer ] = useState('temporary');
+  const [ lodingPaypal, setlodingPaypal ] = useState(false);
+  const [ success, setSuccess ] = useState(false);
+ 
+
+  
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSuccess(false);
+  };
   // shopping step
   const { getAllProducts, nextStep, setStep } = props;
   useEffect(()=>{
@@ -154,6 +173,18 @@ function ShoppingCard(props) {
   const handleSetStep = (step) => {
     props.setStep(step);
 }
+
+useEffect(() => {
+  axios.get(`http://localhost:8080/api/order/success${props.location.search}`)
+  .then((res) =>{
+    console.log(res);
+    setSuccess(true)
+  })
+  .catch((err) =>{
+    console.log(err);
+  })
+
+}, [lodingPaypal]);
   const { uiStep } = props.ui
   const shoppingMarkup = uiStep ==='shopping'?
   <div>
@@ -190,6 +221,14 @@ function ShoppingCard(props) {
       <Cash />
     </Grid>
   </Grid>:null
+  // success
+ const successMarkup = <div className={classes.root}>
+ <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+   <Alert onClose={handleClose} severity="success">
+     This is a success message!
+   </Alert>
+ </Snackbar>
+ </div>
   return (
     <div className={classes.root} >
       <CssBaseline />
@@ -222,6 +261,7 @@ function ShoppingCard(props) {
         { shoppingMarkup }
         { dateMarkup }
         { paymentMarkup }
+        { successMarkup }
       </main>
       <Drawer
         className={classes.Mobiledrawer}

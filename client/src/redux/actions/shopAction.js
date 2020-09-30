@@ -8,7 +8,7 @@ export const addShippingDate = (date)=> (dispatch) =>{
 
   export const paypal = (paymentData)=> (dispatch) =>{
     axios
-        .post('http://localhost:8080/paypal', paymentData)
+        .post('http://localhost:8080/api/order/pay', paymentData)
         .then((res) => {
             if (res.status === 200) {
             console.log(res.data)

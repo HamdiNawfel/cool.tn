@@ -12,7 +12,7 @@ exports.createOrder = (req, res, next) => {
     const customer_id = req.body.customer_id;
     const email = req.body.email;
     const phone = req.body.phone;
-    const location = req.body.location;
+    const shipping_address = req.body.shipping_address;
     const cart = req.body.cart;
     const total = req.body.total;
    
@@ -20,7 +20,7 @@ exports.createOrder = (req, res, next) => {
       customer_id,
       email,
       phone,
-      location,
+      shipping_address,
       cart,
       total,
     });
@@ -36,6 +36,7 @@ exports.createOrder = (req, res, next) => {
           }
       });
     })
+    
     .catch((error) => {
       res.status(500).json({ error });
     });
@@ -54,7 +55,7 @@ exports.postPaypal = (req, res, next) => {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://localhost:3000/success",
+        "return_url": "http://localhost:8080/success",
         "cancel_url": "http://localhost:8080/cancel"
     },
     "transactions": [{
@@ -64,12 +65,12 @@ exports.postPaypal = (req, res, next) => {
                 "sku": "001",
                 "price": "25.00",
                 "currency": "USD",
-                "quantity": 1
+                "quantity": 2
             }]
         },
         "amount": {
             "currency": "USD",
-            "total": "25.00"
+            "total": "50.00"
         },
         "description": "Hat for the best team ever"
     }]
@@ -85,5 +86,79 @@ exports.postPaypal = (req, res, next) => {
         }
     }
   });
+}
 
+/**********************************************************************
+            Request method  :  GET
+            Route           :  /api/order/success
+            Description     :  a callback returned by paypal when the payment is successful
+**************************************************************************/
+
+exports.paypalSuccess = (req, res, next) => {
+  const payerId = req.query.PayerID;
+  const paymentId = req.query.paymentId;
+
+  const execute_payment_json = {
+    "payer_id": payerId,
+    "transactions": [{
+        "amount": {
+            "currency": "USD",
+            "total": "50.00"
+        }
+    }]
+  };
+  paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+    if (error) {
+        console.log(error.response);
+        throw error;
+    } else {
+      User.findOne({ email: payment.payer.payer_info.email })
+        .then(user =>{
+            if(user){
+              const newOrder = new Order({
+                customer_id: user._id,
+                email: user.email,
+                shipping_address: payment.payer.payer_info.shipping_address,
+                item_list:  payment.transactions.item_list,
+                total: payment.transactions[0].total
+              });
+              newOrder.save()
+                .then((result) => {
+                  user.orders.push(result);
+                  user.save();
+                  res.json({ message: 'Order created!' });
+                })
+            }else{
+                const user = new User({
+                    firstName: payment.payer.payer_info.first_name,
+                    lastName: payment.payer.payer_info.last_name,
+                    email: payment.payer.payer_info.email,
+                    });
+                    user
+                      .save()
+                      .then(user => {
+                        const newOrder = new Order({
+                          customer_id: user._id,
+                          email: user.email,
+                          shipping_address: payment.payer.payer_info.shipping_address,
+                          item_list:  payment.transactions.item_list,
+                          total: payment.transactions[0].total
+                        });
+                        newOrder.save()
+                          .then((result) => {
+                            user.orders.push(result);
+                            user.save();
+                            res.json({ message: 'Order created!' });
+                          })
+                      })
+                      .catch(err => {
+                        console.log(err);
+                        res.status(500).json({
+                          message: "something is failed!"
+                        });
+                      });
+                }
+      })
+    }
+});
 }

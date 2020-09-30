@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 //redux set up
 import { connect } from 'react-redux';
 import { paypal } from '../../../redux/actions/shopAction'
@@ -52,8 +54,7 @@ const useStyles = makeStyles((theme) => ({
       color: '#505050',
       textShadow: '0px 1px 0px rgba(255, 255, 255, 0.6)',
       verticalAlign: 'sub'
-  },
-
+  }
 }));
 
 function Paypal(props) {

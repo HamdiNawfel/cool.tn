@@ -3,16 +3,15 @@ import './App.css';
 //redux set up
 import { Provider } from 'react-redux';
 import store from './redux/store'
-import { BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
 
 //pages
 import home from './pages/home/index'
 // import Profile from './pages/profile/index'
 import ShoppingCard from './pages/shoppingCard/index'
-import Success from './pages/success/index'
 import Auth from './features/auth/index'
 //utils
-import PrivateRoute from './utils/PrivateRoute';
+// import PrivateRoute from './utils/PrivateRoute';
 //
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
@@ -42,7 +41,6 @@ function App() {
             <Route exact path="/" component={home} />
             <Route exact path="/shopping-card" component={ShoppingCard} />
             <Route exact path="/login" component={Auth} />
-            <Route exact path="/success" component={Success} />
             {/* <PrivateRoute exact path="/profile" component={Profile} /> */}
           </Switch>
         </div>

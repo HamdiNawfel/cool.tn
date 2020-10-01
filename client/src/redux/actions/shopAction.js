@@ -1,4 +1,4 @@
-import { ADD_SHIPPING_DATE,  SET_ERROR, SET_SUCCESS} from '../types';
+import { ADD_SHIPPING_DATE,  SET_ERROR} from '../types';
 import axios from 'axios';
 
 export const addShippingDate = (date)=> (dispatch) =>{

@@ -2,8 +2,8 @@ import {
   GET_ERRORS,
   NEXT_STEP,
   SET_STEP,
-  SET_ERROR,
-  SET_SUCCESS
+  // SET_ERROR,
+  // SET_SUCCESS
  } from '../types';
   
   const initialState = {

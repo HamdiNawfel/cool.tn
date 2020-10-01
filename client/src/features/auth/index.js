@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router'
-import axios from 'axios'
 //mui
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -21,16 +15,10 @@ import LoginWithFacebook from './components/LoginWithFacebook'
 import image from './assets/background.jpg'
 //util
 import InputText from '../../utils/InputText'
-//Icons
-import FacebookIcon from '@material-ui/icons/Facebook';
-
 
 //redux set up
 import { connect } from 'react-redux';
 import { signupUser,loginUser } from '../../redux/actions/userAction'
-
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -178,12 +166,13 @@ function AuthUser(props) {
   }
 
   useEffect(()=>{
-    setfirstNameError(props.ui.errors.firstName);
-    setLastNameError(props.ui.errors.lastName);
-    setEmailError(props.ui.errors.email);
-    setPasswordError(props.ui.errors.password);
-    setPassword2Error(props.ui.errors.password2);
-  }) 
+    const {firstName, lastName, email, password, password2 } = props.ui.errors
+    setfirstNameError(firstName);
+    setLastNameError(lastName);
+    setEmailError(email);
+    setPasswordError(password);
+    setPassword2Error(password2);
+  },[firstName], [lastName], [email], [password],[password2]) 
   return (
     <Grid container component="main" className={classes.root}>
       {!props.user.isAuthenticated?null:<Redirect to='/'/>}

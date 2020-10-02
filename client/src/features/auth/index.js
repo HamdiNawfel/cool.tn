@@ -126,6 +126,7 @@ function AuthUser(props) {
   const [ firstName, setFirstName ] = useState('');
   const [ lastName, setLastName ] = useState('');
 //errors
+  
   const [ firstNameError, setfirstNameError ] = useState('');
   const [ lastNameError, setLastNameError ] = useState('');
   const [ emailError, setEmailError ] = useState('');
@@ -140,6 +141,7 @@ function AuthUser(props) {
       password
     };
     props.loginUser(userData, props.history)
+    
    if(props.ui.errors.length === 0 ){
      setEmail('');
      setPassword('')
@@ -165,14 +167,15 @@ function AuthUser(props) {
    }
   }
 
-  useEffect(()=>{
-    const {firstName, lastName, email, password, password2 } = props.ui.errors
-    setfirstNameError(firstName);
-    setLastNameError(lastName);
-    setEmailError(email);
-    setPasswordError(password);
-    setPassword2Error(password2);
-  },[firstName], [lastName], [email], [password],[password2]) 
+  useEffect(()=>{  
+    setfirstNameError(props.ui.errors.firstName);
+    setLastNameError(props.ui.errors.lastName);
+    setEmailError(props.ui.errors.email);
+    setPasswordError(props.ui.errors.password);
+    setPassword2Error(props.ui.errors.password2);
+  },[props.ui.errors.email]) 
+
+  
   return (
     <Grid container component="main" className={classes.root}>
       {!props.user.isAuthenticated?null:<Redirect to='/'/>}

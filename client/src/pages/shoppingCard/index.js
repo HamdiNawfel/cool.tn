@@ -29,7 +29,7 @@ import Cash from './components/Cash';
 //redux set up
 import { connect } from 'react-redux';
 import { getAllProducts } from '../../redux/actions/dataAction'
-import { nextStep, setStep} from '../../redux/actions/uiAction'
+import { setStep} from '../../redux/actions/uiAction'
 
 
 const drawerWidth = 360;
@@ -150,12 +150,8 @@ function ShoppingCard(props) {
   
   const classes = useStyles();
   const [ drawer, setDrawer ] = useState('temporary');
-  const [ lodingPaypal, setlodingPaypal ] = useState(false);
   const [ success, setSuccess ] = useState(false);
  
-
-  
-
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -164,7 +160,7 @@ function ShoppingCard(props) {
     setSuccess(false);
   };
   // shopping step
-  const { getAllProducts, nextStep, setStep } = props;
+  const { getAllProducts, setStep } = props;
   useEffect(()=>{
     getAllProducts();
     setStep('shopping');
@@ -176,7 +172,7 @@ function ShoppingCard(props) {
 
 useEffect(() => {
   if(props.location.search !== ''){
-    axios.get(`/api/order/success${props.location.search}`)
+    axios.get(`http://localhost:8080/api/order/success${props.location.search}`)
       .then((res) =>{
         setSuccess(true)
       })
@@ -184,7 +180,7 @@ useEffect(() => {
         console.log(err);
       })
   }
-}, [lodingPaypal]);
+}, []);
   const { uiStep } = props.ui
   const shoppingMarkup = uiStep ==='shopping'?
   <div>
@@ -326,7 +322,6 @@ const mapStateToProps = (state) => ({
 });
 const mapActionsToProps = {
   getAllProducts,
-  nextStep,
   setStep
 };
 export default connect(

@@ -13,13 +13,11 @@ import Menu from '../home/components/Menu'
 import CommonQuestions from '../home/components/CommonQuestions'
 import Subscribe from '../home/components/Subscribe'
 //utils
-import { ButtonContainer } from '../../utils/Button';
 import Title from '../../utils/Title'
 import Appbar from '../../utils/Appbar'
 import Footer from '../../utils/Footer'
 //images
 import heroImage from './assets/heroImage.jpg'
-//Icons
 
 
 const useStyles = makeStyles((theme) => ({

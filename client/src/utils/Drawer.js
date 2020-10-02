@@ -65,23 +65,23 @@ function NestedList(props) {
       }
       className={classes.root}
     > <Link href='/shopping-card'color="inherit" underline="none">
-      <ListItem button>
+        <ListItem button>
           <ListItemText primary="MENU" className={classes.hover}/>
-      </ListItem>
+        </ListItem>
+      </Link>
+      <Link href='/'color="inherit" underline="none">
+        <ListItem button>
+          <ListItemText primary="FOR BUSINESS" className={classes.hover}/>
+        </ListItem>
+      </Link>
+      <Link href='/'color="inherit" underline="none">
+        <ListItem button>
+          <ListItemText primary="CONTACT" className={classes.hover}/>
+        </ListItem>
       </Link>
       <ListItem button>
-        <Link href='/'color="inherit" underline="none">
-          <ListItemText primary="FOR BUSINESS" className={classes.hover}/>
-        </Link>
-      </ListItem>
-      <ListItem button>
-        <Link href='/'color="inherit" underline="none">
-          <ListItemText primary="CONTACT" className={classes.hover}/>
-        </Link>
-      </ListItem>
-      <ListItem button>
        {!isAuthenticated? <Link href='/login'color="inherit" underline="none">
-          <ListItemText primary="CONNECTION" className={classes.hover}/>
+          <ListItemText primary="CONNECTER" className={classes.hover}/>
         </Link>:
         <Link href='/profile'color="inherit" underline="none">
           <ListItemText primary="PROFILE" className={classes.hover}/>

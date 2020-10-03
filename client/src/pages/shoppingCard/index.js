@@ -18,6 +18,7 @@ import MuiAlert from '@material-ui/lab/Alert'
 //icons
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 // components
 import Filter from './components/Filter';
 import Products from './components/Products';
@@ -36,7 +37,7 @@ const drawerWidth = 360;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    minWidth:360,
+    // minWidth:360,
     top:0,
   },
   appBar: {
@@ -118,6 +119,14 @@ const useStyles = makeStyles((theme) => ({
    [theme.breakpoints.down('sm')]: {
     display:'none',
 
+  },
+  },
+  backHome: {
+   display:'none',
+   verticalAlign:'middle',
+   [theme.breakpoints.down('sm')]: {
+    display:'inline',
+   
   },
   },
   mobileCartIcon: {
@@ -241,11 +250,15 @@ useEffect(() => {
          </Link>
          <div style={{flexGrow:1}}/>
          <div>
+         <Link href="/" style={{color:'inherit', textDecoration:'none'}}>
+           <KeyboardBackspaceIcon className={classes.backHome} />
+         </Link>
+            {/* <ChevronRightIcon style={{ opacity:0.3, verticalAlign:'middle'}}/> */}
             <Button onClick={()=>handleSetStep('shopping')}>Menu</Button>
             <ChevronRightIcon style={{ opacity:0.3, verticalAlign:'middle'}}/>
             <Button disabled={ props.shop.shippingDate ===''} onClick={()=>handleSetStep('shipping')}>Date</Button>
             <ChevronRightIcon style={{ opacity:0.3, verticalAlign:'middle' }}/>
-            <Button disabled={uiStep !== 'payment'}onClick={()=>handleSetStep('payment')}>Paiement</Button>
+            <Button disabled={uiStep !== 'payment'}onClick={()=>handleSetStep('payment')}>Payer</Button>
          </div>
          <div style={{flexGrow:1}}/>
          <Badge badgeContent={props.data.count} color="primary" 

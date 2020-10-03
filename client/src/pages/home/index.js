@@ -159,7 +159,7 @@ export default function Home() {
       <div className={classes.hero}>
         <img src={heroImage} style={{width:'100%', height:'auto'}} alt="cool"/>
         <div className={classes.cta}>
-          <Title title="Se protéger de Covid-19, Restez chez vous et commander votre Plat ou petit petit dejeuner." />
+          <Title title="Se protéger de Covid-19, Restez chez vous et commander petit déjeuner." />
           <Link href="/products">
             <button className={classes.ctaButton}>
                 VOIR NOTRE MENU!

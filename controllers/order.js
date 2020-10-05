@@ -60,7 +60,7 @@ exports.postPaypal = (req, res, next) => {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "/shopping-card",
+        "return_url": "https://aqueous-island-38660.herokuapp.com/shopping-card",
         "cancel_url": "/"
     },
     "transactions": [{

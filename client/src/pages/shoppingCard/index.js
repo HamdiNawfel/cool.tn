@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router'
+
 import axios from 'axios'
 //Mui
 import Link from '@material-ui/core/Link';
@@ -25,7 +27,7 @@ import Products from './components/Products';
 import Cart from './components/Cart';
 import ShippingDate from './components/ShippingDate';
 import Paypal from './components/Paypal';
-import Cash from './components/Cash';
+import Checkout from './components/Checkout';
 
 //redux set up
 import { connect } from 'react-redux';
@@ -181,13 +183,20 @@ function ShoppingCard(props) {
 
 useEffect(() => {
   if(props.location.search !== ''){
-    axios.get(`http://localhost:8080/api/order/success${props.location.search}`)
+    axios.get(`http://localhost:8080/api/order/success${props.location.search}&total=${localStorage.getItem('total')}`)
       .then((res) =>{
-        setSuccess(true)
+        if(res.status === 200){
+           setSuccess(true)
+        }else{
+          console.log('cancel')
+        }
       })
       .catch((err) =>{
         console.log(err);
       })
+  }
+  if(props.shop.success){
+    setSuccess(true)
   }
 }, []);
   const { uiStep } = props.ui
@@ -223,19 +232,20 @@ useEffect(() => {
       </Grid>
     </Grid>
     <Grid>
-      <Cash />
+      <Checkout />
     </Grid>
   </Grid>:null
   // success
  const successMarkup = <div className={classes.root}>
  <Snackbar 
-   open={success} 
+   open={props.ui.success || success} 
    anchorOrigin={{ vertical: 'top', horizontal: 'center'}}
-   autoHideDuration={6000}
     onClose={handleClose}>
-   <Alert onClose={handleClose} severity="success">
-   Paiement est effectué avec succès
-   </Alert>
+      <Link href="/shopping-card" style={{color:'inherit', textDecoration:'none'}} >
+        <Alert onClose={handleClose} severity="success">
+        Commande effectué avec succès
+        </Alert>
+   </Link>
  </Snackbar>
  </div>
   return (

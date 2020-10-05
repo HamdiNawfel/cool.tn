@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
               // title={props.title}
             />
             <CardContent>
-              <Link href="/products" style={{textDecoration:'none', color:'#ffa400'}}>
+              <Link href="/shopping-card" style={{textDecoration:'none', color:'#ffa400'}}>
                 <Typography className={classes.title}>
                   {props.title}
                 </Typography>
@@ -129,7 +129,7 @@ export default function Menu() {
             img={item.img}
             id={item.id} />)}
         </Grid>
-        <Link href="/products" style={{textDecoration:'none'}}>
+        <Link href="/shopping-card" style={{textDecoration:'none'}}>
           <ButtonContainer active style={{  
             display:'block',
             margin:'5px auto',

@@ -27,12 +27,12 @@ import {
           products: action.payload,
           loading: true
         };
-        case SET_ERRORS:
-        return {
-          ...state,
-          errors: action.payload,
-          loading: true
-        };
+        // case SET_ERRORS:
+        // return {
+        //   ...state,
+        //   errors: action.payload,
+        //   loading: true
+        // };
       case ADD_TO_CART:
         let addedItem = state.products.find(item=> item._id === action.payload)
         let existedItem = state.addedItems.find(item => item._id ===  action.payload)
@@ -49,7 +49,7 @@ import {
             ...state,
             addedItems: [...state.addedItems, addedItem],
             total: state.total+ addedItem.price,
-            count: state.count + 1
+            count: state.count + 1,
           }
         }
       case SUB_QUANTITY:
@@ -104,9 +104,6 @@ import {
             filter: true
           }
           }
-          // let filtred = state.products.filter(item => item.categorie === action.payload)
-          // console.log(filtred)
-          // console.log(action.payload)
       default:
         return state;
     }

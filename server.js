@@ -16,8 +16,10 @@ const userRoutes = require("./routes/user");
 
 
 // Connect to MongoDB
+// 'mongodb://localhost:27017/breakfasty'
+// process.env.mongoURI
   mongoose
-  .connect(process.env.mongoURI, {
+  .connect('mongodb://localhost:27017/breakfasty', {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex:true

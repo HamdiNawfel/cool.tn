@@ -1,9 +1,9 @@
 import { 
-  GET_ERRORS,
   NEXT_STEP,
   SET_STEP,
-  // SET_ERROR,
-  // SET_SUCCESS
+  SET_ERRORS,
+  SET_SUCCESS,
+  CLEAR_ERRORS
  } from '../types';
   
   const initialState = {
@@ -16,8 +16,9 @@ import {
  
   export default function(state = initialState, action) {
     switch (action.type) {
-      case GET_ERRORS:
+      case SET_ERRORS:
         return {
+        ...state,
         errors : action.payload
        }
        case SET_STEP:
@@ -27,9 +28,25 @@ import {
        }
        case NEXT_STEP:
         let index = state.steps.indexOf(state.uiStep);
+        let step;
+        if(index ===2){
+          step = 0;
+        }else{
+           step = index+1
+        }
         return {
         ...state,
-        uiStep: state.steps[index +1]
+        uiStep: state.steps[step]
+       }
+       case SET_SUCCESS:
+        return {
+        ...state,
+        success:true
+       }
+       case CLEAR_ERRORS:
+        return {
+        ...state,
+        errors:{}
        }
       default:
         return state;

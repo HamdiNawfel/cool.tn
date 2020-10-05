@@ -25,5 +25,6 @@ export const NEXT_STEP = 'NEXT_STEP';
 export const SET_STEP = 'SET_STEP';
 export const SET_ERROR = 'SET_ERROR';
 export const SET_SUCCESS = 'SET_SUCCESS';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 //SHOP
 export const ADD_SHIPPING_DATE = 'ADD_SHIPPING_DATE';

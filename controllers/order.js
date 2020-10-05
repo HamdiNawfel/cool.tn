@@ -1,5 +1,10 @@
 const Order = require("../models/order");
 const User = require("../models/user");
+const validateCheckout = require("../validation/order");
+require('dotenv').config()
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 const paypal = require('paypal-rest-sdk');
 
 /**********************************************************************
@@ -55,22 +60,16 @@ exports.postPaypal = (req, res, next) => {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "/shopping-card",
-        "cancel_url": "/cancel"
+        "return_url": "http://localhost:3000/shopping-card",
+        "cancel_url": "http://localhost:3000/"
     },
     "transactions": [{
         "item_list": {
-            "items": [{
-                "name": "Red Sox Hat",
-                "sku": "001",
-                "price": "25.00",
-                "currency": "USD",
-                "quantity": 2
-            }]
+            "items": req.body.items
         },
         "amount": {
             "currency": "USD",
-            "total": "50.00"
+            "total": req.body.items[0].price
         },
         "description": "Hat for the best team ever"
     }]
@@ -79,6 +78,7 @@ exports.postPaypal = (req, res, next) => {
     if (error) {
         throw error;
     } else {
+        console.log(req.body.items[0].price)
         for(let i = 0;i < payment.links.length;i++){
           if(payment.links[i].rel === 'approval_url'){
             res.json({forwardLink: payment.links[i].href});
@@ -89,7 +89,7 @@ exports.postPaypal = (req, res, next) => {
 }
 
 /**********************************************************************
-            Request method  :  GET
+            Request method  :  get
             Route           :  /api/order/success
             Description     :  a callback returned by paypal when the payment is successful
 **************************************************************************/
@@ -97,13 +97,13 @@ exports.postPaypal = (req, res, next) => {
 exports.paypalSuccess = (req, res, next) => {
   const payerId = req.query.PayerID;
   const paymentId = req.query.paymentId;
-
+ 
   const execute_payment_json = {
     "payer_id": payerId,
     "transactions": [{
         "amount": {
             "currency": "USD",
-            "total": "50.00"
+            "total":req.query.total
         }
     }]
   };
@@ -118,8 +118,8 @@ exports.paypalSuccess = (req, res, next) => {
               const newOrder = new Order({
                 customer_id: user._id,
                 email: user.email,
-                shipping_address: payment.payer.payer_info.shipping_address,
-                item_list:  payment.transactions.item_list,
+                shippingAddress: payment.payer.payer_info.shipping_address,
+                itemList:  payment.transactions.item_list,
                 total: payment.transactions[0].amount.total
               });
               newOrder.save()
@@ -140,8 +140,8 @@ exports.paypalSuccess = (req, res, next) => {
                         const newOrder = new Order({
                           customer_id: user._id,
                           email: user.email,
-                          shipping_address: payment.payer.payer_info.shipping_address,
-                          item_list:  payment.transactions.item_list,
+                          shippingAddress: payment.payer.payer_info.shipping_address,
+                          itemList:  payment.transactions.item_list,
                           total: payment.transactions[0].amount.total
                         });
                         newOrder.save()
@@ -161,4 +161,70 @@ exports.paypalSuccess = (req, res, next) => {
       })
     }
 });
+}
+
+/**********************************************************************
+            Request method  :  POST
+            Route           :  /api/order/cash
+            Description     :  PAYMENT WITH cash METHOD
+**************************************************************************/
+
+exports.checkout = (req, res, next) => {
+  const { errors, isValid } = validateCheckout(req.body);
+    // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if(user){
+        const newOrder = new Order({
+          customer_id: user._id,
+          email: user.email,
+          shippingAddress: req.body.shippingAddress,
+          itemList:  req.body.itemList,
+          total: req.body.total
+        });
+        newOrder.save()
+          .then((result) => {
+            user.orders.push(result);
+            user.save();
+            res.json({ message: 'Order created!' });
+          })
+      }else{
+        bcrypt.hash(req.body.password, 10).then(hash => {
+          const user = new User({
+              firstName: req.body.firstName,
+              lastName: req.body.lastName,
+              email: req.body.email,
+              password: hash, 
+              imageUrl: req.body.imageUrl
+          });
+          user
+            .save()
+            .then(user =>{
+              const newOrder = new Order({
+                
+                email: user.email,
+                customer_id: user._id,
+                shippingAddress: req.body.shippingAddress,
+                itemList:  req.body.itemList,
+                total: req.body.total
+              });
+              newOrder.save()
+                .then((result) => {
+                  user.orders.push(result);
+                  user.save();
+                  res.json({ message: 'Order created!' });
+                })
+            })
+            .catch(err => {
+              console.log(err);
+              res.status(500).json({
+                message: "Invalid authentication credentials!"
+              });
+            });
+        });
+      }
+    })
 }

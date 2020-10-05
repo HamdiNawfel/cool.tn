@@ -177,7 +177,7 @@ const useStyles = makeStyles((theme) => ({
               <Link
               variant="button" 
               color="textPrimary" 
-              href="#" 
+              href="/profile" 
               className={classes.link } 
               style={{textDecoration:'none'}}>
               PROFILE

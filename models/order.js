@@ -5,8 +5,8 @@ const orderSchema = new Schema({
   customer_id: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String },
-  shipping_address: { type: Object, required: true},
-  item_list: [{ name: String, price: Number, quantity: Number }],
+  shippingAddress: { type: Object, required: true},
+  itemList: [{ name: String, price: Number, quantity: Number }],
   total: { type: Number, required: true},
   date : { type : Date, default: Date.now }
 });

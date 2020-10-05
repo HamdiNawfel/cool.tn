@@ -1,5 +1,5 @@
 import { 
-    ADD_SHIPPING_DATE,
+    ADD_SHIPPING_DATE
    } from '../types';
     
     const initialState = {
@@ -14,6 +14,7 @@ import {
           ...state,
           shippingDate: action.payload
          }
+         
         default:
           return state;
       }

@@ -2,7 +2,7 @@ import {
   // GET_ERRORS,
   NEXT_STEP,
   SET_STEP,
-  // SET_ERROR,
+  CLEAR_ERRORS,
   // SET_SUCCESS
  } from '../types';
 
@@ -13,3 +13,7 @@ export const nextStep = ()=> (dispatch) =>{
     dispatch({ type: SET_STEP,
                 payload : step });
   }
+
+export const clearErrors = () => (dispatch) => {
+  dispatch({ type: CLEAR_ERRORS });
+}

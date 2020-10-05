@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
     LOADING,
     SET_CURRENT_USER,
-    GET_ERRORS,
+    SET_ERRORS,
     SET_UNAUTHENTICATED,
     GET_ORDER
   } from '../types';
@@ -24,7 +24,7 @@ import {
       
       .catch(err =>
         dispatch({
-          type: GET_ERRORS,
+          type: SET_ERRORS,
           payload: err.response.data
         })
       );
@@ -32,7 +32,7 @@ import {
   // Login - get user token
 export const loginUser = userData => dispatch => {
     axios
-      .post("/api/login", userData)
+      .post("http://localhost:8080/api/login", userData)
       .then(res => {
         // Save to localStorage
   // Set token to localStorage
@@ -48,7 +48,7 @@ export const loginUser = userData => dispatch => {
       })
       .catch(err =>
         dispatch({
-          type: GET_ERRORS,
+          type: SET_ERRORS,
           payload: err.response.data
         })
       );

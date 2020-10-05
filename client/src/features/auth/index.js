@@ -18,7 +18,8 @@ import InputText from '../../utils/InputText'
 
 //redux set up
 import { connect } from 'react-redux';
-import { signupUser,loginUser } from '../../redux/actions/userAction'
+import { signupUser,loginUser, } from '../../redux/actions/userAction'
+import { clearErrors } from '../../redux/actions/uiAction'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -118,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AuthUser(props) {
   const classes = useStyles();
-  const [ newUser, setNewUser ] = useState(true);
+  const [ newUser, setNewUser ] = useState(false);
   //input fields
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('');
@@ -173,8 +174,17 @@ function AuthUser(props) {
     setEmailError(props.ui.errors.email);
     setPasswordError(props.ui.errors.password);
     setPassword2Error(props.ui.errors.password2);
-  },[props.ui.errors.email]) 
+  });
 
+  const handleSignup = () => {
+    setNewUser(true)
+    props.clearErrors()
+  }
+  const handleLogin = () => {
+    setNewUser(false)
+    props.clearErrors()
+   
+  }
   
   return (
     <Grid container component="main" className={classes.root}>
@@ -188,7 +198,7 @@ function AuthUser(props) {
               cool
             </Typography>
           </Link>
-          {newUser?
+          {!newUser?
             <div >
               <Typography component="h1" variant="h5" className={classes.text}color="textSecondary">
                 Se connecter
@@ -208,7 +218,7 @@ function AuthUser(props) {
                       <Divider />
                     </Grid>
                 </Grid>
-                <div style={{marginBottom: 20}} onClick={()=>setNewUser(false)} >
+                <div style={{marginBottom: 20}} onClick={handleSignup} >
                   <Link variant="body2"color="textSecondary" style={{ cursor:'pointer',marginTop:10}}>
                     Vous êtes un nouveau utilisateur? <span style={{ color:'#edaf07'}}> Créez un compte</span>
                   </Link>
@@ -248,7 +258,7 @@ function AuthUser(props) {
               <Typography component="h1" variant="h5" className={classes.text}>
                  Créer un nouveau compte
               </Typography>
-              <div style={{marginBottom: 20}} onClick={()=>setNewUser(true)}>
+              <div style={{marginBottom: 20}} onClick={handleLogin}>
                 <Link  variant="body2"color="textSecondary" style={{ cursor:'pointer'}}>
                   Vous avez déjà un compte! <span style={{ color:'#edaf07'}}> Se connecter</span>
                 </Link>
@@ -339,7 +349,8 @@ const mapStateToProps = (state) => ({
 });
 const mapActionsToProps = {
  signupUser,
- loginUser
+ loginUser,
+ clearErrors
 };
 export default connect(
   mapStateToProps,

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 //Mui
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 //redux set up
 import { connect } from 'react-redux';
 import { paypal } from '../../../redux/actions/shopAction'
@@ -53,15 +54,32 @@ const useStyles = makeStyles((theme) => ({
       color: '#505050',
       textShadow: '0px 1px 0px rgba(255, 255, 255, 0.6)',
       verticalAlign: 'sub'
-  }
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 function Paypal(props) {
   const classes = useStyles();
+  const [ open, setOpen ] = useState(false)
  
   const handlePayment = () => {
-    const paymentData = props.data.addedItems
+    const paymentData = {
+      items:[
+        {
+          //FIXME: custom order staff
+          name: "cool staff",
+          "price": props.data.total,
+          "currency": "USD",
+          "quantity": 1
+        }
+      ]
+    }
+    localStorage.setItem("total", paymentData.items[0].price);
     props.paypal(paymentData);
+    setOpen(true)
   }
   return (
     <Grid className={classes.root}>
@@ -78,6 +96,9 @@ function Paypal(props) {
           <span className={classes.pal}>Pal</span>
         </Typography>
       </Button>
+      <Backdrop className={classes.backdrop} open={open} >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       
     </Grid>
   );

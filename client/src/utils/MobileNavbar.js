@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-// import clsx from 'clsx';
+import React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 //list

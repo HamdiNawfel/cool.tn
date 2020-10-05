@@ -1,4 +1,4 @@
-import React , {useEffect }from 'react';
+import React from 'react';
 import FacebookLogin from 'react-facebook-login';
 import FacebookIcon from '@material-ui/icons/Facebook';
 //set up redux
@@ -17,9 +17,7 @@ function LoginWithFacebook(props) {
           }
          props.authUser(userData);
       }
-      useEffect(() => {
-        console.log(REACT_APP_FACEBOOK_APP_ID)
-      }, []);
+     
     return (
         <FacebookLogin
         size={"medium"}

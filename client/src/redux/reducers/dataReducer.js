@@ -1,7 +1,6 @@
 import {
     LOADING_PRODUCTS,
     ADD_TO_CART,
-    SET_ERRORS,
     SUB_QUANTITY,
     REMOVE_ITEM,
     CLEAR_ALL,
@@ -27,12 +26,6 @@ import {
           products: action.payload,
           loading: true
         };
-        // case SET_ERRORS:
-        // return {
-        //   ...state,
-        //   errors: action.payload,
-        //   loading: true
-        // };
       case ADD_TO_CART:
         let addedItem = state.products.find(item=> item._id === action.payload)
         let existedItem = state.addedItems.find(item => item._id ===  action.payload)

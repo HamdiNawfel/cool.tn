@@ -1,4 +1,4 @@
-import React , { useEffect } from 'react';
+import React from 'react';
 //Mui
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link';
@@ -75,10 +75,6 @@ const useStyles = makeStyles((theme) => ({
         opacity:0.96,
   }
 },
-  notDisplay: {
-  //  display:'none',
-  //  transition: 'display 5s'
-  },
   chip: {
    margin:5,
    [theme.breakpoints.down('sm')]: {
@@ -100,19 +96,12 @@ const useStyles = makeStyles((theme) => ({
 
 function NavBar(props) {
   const classes = useStyles()
-  const [isAuthenticated, setyIsAuthenticated] = React.useState(false);
- 
-  useEffect(()=>{
-    if(localStorage.length !== 0){
-      setyIsAuthenticated(true)
-    }
-  },[]) 
+
   return (
     <div className={classes.grow}>
          <CssBaseline />
       
       <AppBar position="fixed" color="inherit" elevation={0} className={classes.appBar}>
-      {/* <div className={classes.shippingInfo}>Livraison gratuite !</div> */}
         <Toolbar>
           {/* MobileNavbar */}
           <div className={classes.sectionMobile}>

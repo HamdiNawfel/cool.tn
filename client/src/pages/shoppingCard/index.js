@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router'
-
 import axios from 'axios'
 //Mui
 import Link from '@material-ui/core/Link';

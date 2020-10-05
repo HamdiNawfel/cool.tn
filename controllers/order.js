@@ -78,7 +78,6 @@ exports.postPaypal = (req, res, next) => {
     if (error) {
         throw error;
     } else {
-        console.log(req.body.items[0].price)
         for(let i = 0;i < payment.links.length;i++){
           if(payment.links[i].rel === 'approval_url'){
             res.json({forwardLink: payment.links[i].href});
@@ -109,7 +108,6 @@ exports.paypalSuccess = (req, res, next) => {
   };
   paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
     if (error) {
-        console.log(error.response);
         throw error;
     } else {
       User.findOne({ email: payment.payer.payer_info.email })
@@ -228,5 +226,40 @@ exports.checkout = (req, res, next) => {
             });
         });
       }
+    })
+}
+
+/**********************************************************************
+            Request method  :  POST
+            Route           :  /api/order/authenticated
+            Description     :  create order for logged user
+**************************************************************************/
+
+exports.authenticatedOrder = (req, res, next) => {
+  
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if(user){
+        const newOrder = new Order({
+          customer_id: user._id,
+          email: user.email,
+          shippingAddress: req.body.shippingAddress,
+          shippingDate: req.body.shippingDate,
+          itemList:  req.body.itemList,
+          total: req.body.total
+        });
+        newOrder.save()
+          .then((result) => {
+            user.orders.push(result);
+            user.save();
+            res.json({ message: 'Order created!' });
+          })
+      }
+    })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          message: "Invalid authentication credentials!"
+        });
     })
 }

@@ -33,6 +33,7 @@ import Checkout from './components/Checkout';
 import { connect } from 'react-redux';
 import { getAllProducts } from '../../redux/actions/dataAction'
 import { setStep} from '../../redux/actions/uiAction'
+import { getUser } from '../../redux/actions/userAction'
 
 
 const drawerWidth = 360;
@@ -171,9 +172,10 @@ function ShoppingCard(props) {
     setSuccess(false);
   };
   // shopping step
-  const { getAllProducts, setStep } = props;
+  const { getAllProducts, setStep, getUser} = props;
   useEffect(()=>{
     getAllProducts();
+    getUser();
     setStep('shopping');
   },[getAllProducts]);
 
@@ -183,7 +185,7 @@ function ShoppingCard(props) {
 
 useEffect(() => {
   if(props.location.search !== ''){
-    axios.get(`http://localhost:8080/api/order/success${props.location.search}&total=${localStorage.getItem('total')}`)
+    axios.get(`/api/order/success${props.location.search}&total=${localStorage.getItem('total')}`)
       .then((res) =>{
         if(res.status === 200){
            setSuccess(true)
@@ -345,6 +347,7 @@ const mapStateToProps = (state) => ({
 });
 const mapActionsToProps = {
   getAllProducts,
+  getUser,
   setStep
 };
 export default connect(

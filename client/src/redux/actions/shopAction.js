@@ -8,7 +8,7 @@ export const addShippingDate = (date)=> (dispatch) =>{
 
   export const paypal = (paymentData)=> (dispatch) =>{
     axios
-        .post('http://localhost:8080/api/order/pay', paymentData)
+        .post('/api/order/pay', paymentData)
         .then((res) => {
             if (res.status === 200) {
             window.location = res.data.forwardLink
@@ -23,7 +23,21 @@ export const addShippingDate = (date)=> (dispatch) =>{
 
   export const checkout = (orderData)=> (dispatch) =>{
     axios
-        .post('http://localhost:8080/api/order/checkout', orderData)
+        .post('/api/order/checkout', orderData)
+        .then((res) => {
+             dispatch({ type: SET_SUCCESS });
+            dispatch({ type: NEXT_STEP });
+           
+        })
+        .catch((err) => {
+            dispatch({ type: SET_ERRORS,
+                payload: err.response.data });
+        })
+  }
+
+  export const checkoutLoggedUser = (orderData)=> (dispatch) =>{
+    axios
+        .post('/api/order/authenticated', orderData)
         .then((res) => {
              dispatch({ type: SET_SUCCESS });
             dispatch({ type: NEXT_STEP });

@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const mongoose = require("mongoose");
 const passport = require("passport");
-const cors = require("cors");
 // paypal set up
 const paypal = require('paypal-rest-sdk');
 //Load routes
@@ -16,10 +15,8 @@ const userRoutes = require("./routes/user");
 
 
 // Connect to MongoDB
-// 'mongodb://localhost:27017/breakfasty'
-// process.env.mongoURI
   mongoose
-  .connect('mongodb://localhost:27017/breakfasty', {
+  .connect(process.env.mongoURI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex:true
@@ -29,7 +26,6 @@ const userRoutes = require("./routes/user");
   console.log(`DB Connection Error: ${err.message}`);
   });
 //middleware setup
-
 
 // upload file middlware -folder
 app.use('/uploads',express.static(path.join(__dirname,'uploads')));

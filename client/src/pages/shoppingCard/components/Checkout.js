@@ -13,7 +13,7 @@ import InputText from '../../../utils/InputText'
 
 //redux set up
 import { connect } from 'react-redux';
-import { checkout } from '../../../redux/actions/shopAction'
+import { checkout , checkoutLoggedUser} from '../../../redux/actions/shopAction'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,10 +52,16 @@ const useStyles = makeStyles((theme) => ({
    inputText:{
     marginTop:10,
    },
+   btnContainer:{
+     display:'flex',
+     alignItems:'center',
+     justifyContent:'center'
+    
+   },
    checkoutBtn:{
      marginTop:20,
-     padding:15,
-    width:'100%'
+     padding:18,
+     width:250,
    },
    backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -91,9 +97,9 @@ function Checkout( props) {
     e.preventDefault();
     const orderData = {
       itemList:props.data.addedItems,
-      firstName,
-      lastName,
-      email,
+      firstName:firstName || props.user.credentials.firstName,
+      lastName: lastName || props.user.credentials.lastName,
+      email : email || props.user.credentials.email,
       phone,
       shippingAddress,
       shippingDate: props.shop.shippingDate,
@@ -101,7 +107,12 @@ function Checkout( props) {
       password2,
       total:props.data.total
     }
-    props.checkout(orderData);
+   if(props.user.isAuthenticated){
+    props.checkoutLoggedUser(orderData)
+   }else{
+    props.checkout(orderData)
+   };
+    console.log(orderData)
     if(props.ui.errors.length === 0 ){
       setFirstName('')
       setLastName('')
@@ -126,61 +137,43 @@ function Checkout( props) {
     console.log(props)
   }) 
   return (
-    <Grid className={classes.root}>
-      
+    <Grid className={classes.root}>     
        <Grid className={classes.paymentMethod}>
-        <Typography className={classes.text} color="textSecondary" component="h1" variant="h5">
-        Paiement à la livraison
-        </Typography>
+          <Typography className={classes.text} color="textSecondary" component="h1" variant="h5">
+          Paiement à la livraison
+          </Typography>
        </Grid>
        <Grid >
-       <form className={classes.form} onSubmit={handleCheckout}>
-              <Grid container>
-              <Grid item xs={6}>
-                <InputText 
-                  error
-                  helperText={firstNameError}
-                  type="text"
-                  autoFocus
-                  fullWidth
-                  placeholder="Nom"
-                  className={classes.firstName}
-                  value={firstName}
-                  onChange={(e)=>setFirstName(e.target.value)}                     
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <InputText 
-                  error
-                  helperText={lastNameError}
-                  type="text"
-                  fullWidth
-                  placeholder="Prénon"
-                  className={classes.Lastname}
-                  value={lastName}
-                  onChange={(e)=>setLastName(e.target.value)}
+          <form className={classes.form} onSubmit={handleCheckout}>
+             {!props.user.isAuthenticated?
+             <div>
+                             <Grid container>    
+                <Grid item xs={6}>
+                  <InputText 
+                    error
+                    helperText={firstNameError}
+                    type="text"
+                    autoFocus
+                    fullWidth
+                    placeholder="Nom"
+                    className={classes.firstName}
+                    value={firstName}
+                    onChange={(e)=>setFirstName(e.target.value)}                     
                   />
-              </Grid>
+                 </Grid>
+                <Grid item xs={6}>
+                  <InputText 
+                    error
+                    helperText={lastNameError}
+                    type="text"
+                    fullWidth
+                    placeholder="Prénon"
+                    className={classes.Lastname}
+                    value={lastName}
+                    onChange={(e)=>setLastName(e.target.value)}
+                    />
+                </Grid>
             </Grid>
-            
-            <InputText 
-              error
-              helperText={phoneError}
-              fullWidth
-              placeholder="Télephone"
-              className={classes.inputText}
-              value={phone}
-              onChange={(e)=>setPhone(e.target.value)}
-            />
-             <InputText 
-              error
-              helperText={shippingAddressError}
-              fullWidth
-              placeholder="Adresse de livraison"
-              className={classes.inputText}
-              value={shippingAddress}
-              onChange={(e)=>setShippingAddress(e.target.value)}
-            />
             <InputText 
               error
               helperText={emailError}
@@ -222,14 +215,36 @@ function Checkout( props) {
               value={password2}
               onChange={(e)=>setPassword2(e.target.value)}
             />
-            <Button variant="contained" color="primary"className={classes.checkoutBtn} type="submit">
-              Passer votre commande
-            </Button>
+             </div>:null}
+  
+             <InputText 
+              error
+              helperText={phoneError}
+              fullWidth
+              placeholder="Télephone"
+              className={classes.inputText}
+              value={phone}
+              onChange={(e)=>setPhone(e.target.value)}
+            />
+             <InputText 
+              error
+              helperText={shippingAddressError}
+              fullWidth
+              placeholder="Adresse de livraison"
+              className={classes.inputText}
+              value={shippingAddress}
+              onChange={(e)=>setShippingAddress(e.target.value)}
+            />
+            <div className={classes.btnContainer}>
+              <Button variant="contained" color="primary"className={classes.checkoutBtn} type="submit">
+                Passer votre commande
+              </Button>
+            </div>
           </form>
-          </Grid>
-          <Backdrop className={classes.backdrop} open={open} >
-            <CircularProgress color="inherit" />
-         </Backdrop>
+        </Grid>
+        <Backdrop className={classes.backdrop} open={open} >
+          <CircularProgress color="inherit" />
+        </Backdrop>
     </Grid>
   );
 }
@@ -241,7 +256,8 @@ const mapStateToProps = (state) => ({
   data: state.data
 });
 const mapActionsToProps = {
-  checkout
+  checkout,
+  checkoutLoggedUser
 };
 export default connect(
   mapStateToProps,

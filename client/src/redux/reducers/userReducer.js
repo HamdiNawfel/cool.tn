@@ -27,11 +27,6 @@ import {
           ...state,
           loading: false
         };
-        case SET_AUTHENTICATED:
-        return {
-          ...state,
-          authenticated: true
-        };
         case GET_ORDER:
         return {
           ...state,
@@ -40,6 +35,11 @@ import {
            orders: action.payload.orders,
          
         };
+        case SET_AUTHENTICATED:
+          return {
+            ...state,
+           isAuthenticated:true
+          };
         case SET_UNAUTHENTICATED:
         return initialState;
       default:

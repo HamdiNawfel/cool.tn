@@ -5,6 +5,7 @@ import {
     SET_CURRENT_USER,
     SET_ERRORS,
     SET_UNAUTHENTICATED,
+    SET_AUTHENTICATED,
     GET_ORDER
   } from '../types';
 //Sign up user
@@ -32,7 +33,7 @@ import {
   // Login - get user token
 export const loginUser = userData => dispatch => {
     axios
-      .post("http://localhost:8080/api/login", userData)
+      .post("/api/login", userData)
       .then(res => {
         // Save to localStorage
   // Set token to localStorage
@@ -56,7 +57,7 @@ export const loginUser = userData => dispatch => {
  // Login with GOOGLE - get user token
  export const authUser = userData => dispatch => {
   axios
-    .post("http://localhost:8080/api/auth", userData)
+    .post("/api/auth", userData)
     .then(res => {
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
@@ -99,12 +100,13 @@ export const logoutUser = () => dispatch => {
 
 export const getUser = () => dispatch => {
   dispatch({ type: LOADING });
-  const token = localStorage.getItem('jwtToken');
+  if(localStorage.jwtToken){
+    const token = localStorage.getItem('jwtToken');
   const decoded = jwt_decode(token);
   dispatch(setCurrentUser(decoded));
   const userId = decoded.userId;
   axios
-    .get(`http://localhost:8080/api/user/${userId}`)
+    .get(`/api/user/${userId}`)
     .then((res) => {
       dispatch({
         type: GET_ORDER,
@@ -112,4 +114,12 @@ export const getUser = () => dispatch => {
       });
     })
     .catch((err) => console.log(err));
+   }
+  
+}
+
+export const setAuthenticated = () => dispatch =>{
+  if(localStorage.jwtToken){
+  dispatch({ type: SET_AUTHENTICATED });
+  }
 }

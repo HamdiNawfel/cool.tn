@@ -13,7 +13,7 @@ import axios from 'axios';
   // LOADING PRODUCTS
 export const getAllProducts = () => (dispatch) => { 
   axios
-    .get('http://localhost:8080/api/products')
+    .get('/api/products')
     .then((res) => {
       dispatch({
         type: LOADING_PRODUCTS,

@@ -13,6 +13,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 
+//redux
+import { connect } from 'react-redux';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,13 +50,6 @@ const useStyles = makeStyles((theme) => ({
 
 function NestedList(props) {
   const classes = useStyles();
-  const [isAuthenticated, setyIsAuthenticated] = React.useState(false);
- 
-  useEffect(()=>{
-    if(localStorage.length !== 0){
-      setyIsAuthenticated(true)
-    }
-  },[]) 
 
   return (
     <List
@@ -66,7 +61,7 @@ function NestedList(props) {
       className={classes.root}
     > <Link href='/shopping-card'color="inherit" underline="none">
         <ListItem button>
-          <ListItemText primary="MENU" className={classes.hover}/>
+          <ListItemText primary="RECETTES" className={classes.hover}/>
         </ListItem>
       </Link>
       <Link href='/'color="inherit" underline="none">
@@ -80,7 +75,7 @@ function NestedList(props) {
         </ListItem>
       </Link>
       <ListItem button>
-       {!isAuthenticated? <Link href='/login'color="inherit" underline="none">
+       {!props.isAuthenticated? <Link href='/login'color="inherit" underline="none">
           <ListItemText primary="CONNECTER" className={classes.hover}/>
         </Link>:
         <Link href='/profile'color="inherit" underline="none">
@@ -91,7 +86,7 @@ function NestedList(props) {
     </List>
   );
 }
-export default function SwipeableTemporaryDrawer() {
+function MobileNavbar(props) {
   
 const [open, setOpen] = React.useState(false)
   const toggleDrawer  = (event) => {
@@ -114,9 +109,18 @@ const handleClose = () => {
               anchor='left'
               open={open}
             >
-              <NestedList close={handleClose}/>
+              <NestedList close={handleClose} isAuthenticated={props.user.isAuthenticated}/>
             </Drawer>
         </React.Fragment>
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  user: state.user
+ });
+
+ export default connect(
+   mapStateToProps,
+   null
+ )(MobileNavbar);

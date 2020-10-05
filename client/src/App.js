@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
 
 //pages
 import home from './pages/home/index'
-import Profile from './pages/profile'
+import Profile from './pages/profile/index'
 import ShoppingCard from './pages/shoppingCard/index'
 import Auth from './features/auth/index'
 //utils

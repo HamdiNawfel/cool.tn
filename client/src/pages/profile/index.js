@@ -8,20 +8,22 @@ import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 //utils
-import Appbar from '../utils/Appbar'
-
+import Appbar from '../../utils/Appbar'
+//componenst
+import RecentOrder from './components/RecentOrder'
 
 //redux set up
 import { connect } from 'react-redux';
-import { getUser, logoutUser } from '../redux/actions/userAction'
+import { getUser, logoutUser } from '../../redux/actions/userAction'
 
 const useStyles = makeStyles((theme) => ({
     root: {
         marginTop:40,
         display:'flex',
-        padding:20,
+        // padding:20,
         flexDirection: 'row',
         [theme.breakpoints.down('sm')]: {
             flexDirection: ' column-reverse',
@@ -29,13 +31,17 @@ const useStyles = makeStyles((theme) => ({
     },
     profile: {
       marginTop:40,
+      [theme.breakpoints.down('sm')]:{
+        maxWidth:360
+     }
     },
     order: {
         marginTop:40,
         position:'relative',
         top:0,
         [theme.breakpoints.down('sm')]:{
-            top:-80,
+            top:10,
+            maxWidth:360,
             marginTop:0,
         }
     },
@@ -46,16 +52,37 @@ const useStyles = makeStyles((theme) => ({
         textAlign:'center',
         fontWeight:600,
     },
+    container:{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+       
+    },
+    avatar: {
+       margin:'20px auto',
+       width:100,
+       height:100
+    }, 
     userInfo: {
-        margin:'20px auto'
+        margin:'20px 0',
+        textAlign:'center'
+    },
+    buttonContainer:{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
     },
     logoutBtn: {
-        margin:'20px auto'
+        margin:'20px 0',
     }
   }));
 function Profile(props) {
   const classes = useStyles();
-  const handleLogout = () => {
+  useEffect(() => {
+    props.getUser()
+    
+}, []);
+  const handleLogout = () => { 
       props.logoutUser()
   }
     return (
@@ -71,7 +98,7 @@ function Profile(props) {
                 </Typography>
                 <Divider />
                 
-                
+                <RecentOrder />
                 </CardContent>
             </Card>
         </Grid>
@@ -83,23 +110,29 @@ function Profile(props) {
                 PROFILE
                 </Typography>
                 <Divider />
-                <Grid>
+                <Grid > 
+                <Avatar 
+                   src={props.user.credentials.imageUrl}
+                   alt={props.user.credentials.firstName}
+                   className={classes.avatar}/>
                     <Typography className={classes.userInfo}>
-                        HAMDI NAWFEL
+                        {props.user.credentials.firstName} {props.user.credentials.lastName}
                     </Typography>
                     <Typography className={classes.userInfo}>
-                        email
+                    {props.user.credentials.email}
                     </Typography>
                     <Typography className={classes.userInfo}>
-                        USER_id 5DGSHIHCI56C6666Q6CCC
+                        USER_ID : {props.user.credentials._id}
                     </Typography>
+                 <div className={classes.buttonContainer}>
                     <Button 
-                       variant="contained" 
-                       className={classes.logoutBtn} 
-                       onClick={handleLogout}
-                       >
-                           Déconnecter
-                    </Button>
+                        variant="contained" 
+                        className={classes.logoutBtn} 
+                        onClick={handleLogout}
+                        >
+                            Déconnecter
+                        </Button>
+                 </div>
                 </Grid>
             
                 </CardContent>

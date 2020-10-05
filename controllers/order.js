@@ -182,6 +182,7 @@ exports.checkout = (req, res, next) => {
           customer_id: user._id,
           email: user.email,
           shippingAddress: req.body.shippingAddress,
+          shippingDate: req.body.shippingDate,
           itemList:  req.body.itemList,
           total: req.body.total
         });
@@ -208,6 +209,7 @@ exports.checkout = (req, res, next) => {
                 email: user.email,
                 customer_id: user._id,
                 shippingAddress: req.body.shippingAddress,
+                shippingDate: req.body.shippingDate,
                 itemList:  req.body.itemList,
                 total: req.body.total
               });

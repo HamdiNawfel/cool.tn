@@ -6,6 +6,7 @@ const orderSchema = new Schema({
   email: { type: String, required: true },
   phone: { type: String },
   shippingAddress: { type: Object, required: true},
+  shippingDate: { type: String },
   itemList: [{ name: String, price: Number, quantity: Number }],
   total: { type: Number, required: true},
   date : { type : Date, default: Date.now }

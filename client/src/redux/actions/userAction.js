@@ -56,7 +56,7 @@ export const loginUser = userData => dispatch => {
  // Login with GOOGLE - get user token
  export const authUser = userData => dispatch => {
   axios
-    .post("/api/auth", userData)
+    .post("http://localhost:8080/api/auth", userData)
     .then(res => {
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
@@ -104,7 +104,7 @@ export const getUser = () => dispatch => {
   dispatch(setCurrentUser(decoded));
   const userId = decoded.userId;
   axios
-    .get(`/api/user/${userId}`)
+    .get(`http://localhost:8080/api/user/${userId}`)
     .then((res) => {
       dispatch({
         type: GET_ORDER,

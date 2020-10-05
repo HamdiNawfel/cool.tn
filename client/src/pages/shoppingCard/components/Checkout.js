@@ -96,6 +96,7 @@ function Checkout( props) {
       email,
       phone,
       shippingAddress,
+      shippingDate: props.shop.shippingDate,
       password,
       password2,
       total:props.data.total

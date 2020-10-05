@@ -7,7 +7,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Drawer from './Drawer'
+
+//utils
+import MobileNavbar from './MobileNavbar'
+//redux
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -94,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
    
 }));
 
-  export default function NavBar(props) {
+function NavBar(props) {
   const classes = useStyles()
   const [isAuthenticated, setyIsAuthenticated] = React.useState(false);
  
@@ -110,9 +114,9 @@ const useStyles = makeStyles((theme) => ({
       <AppBar position="fixed" color="inherit" elevation={0} className={classes.appBar}>
       {/* <div className={classes.shippingInfo}>Livraison gratuite !</div> */}
         <Toolbar>
-          {/* DRAWER */}
+          {/* MobileNavbar */}
           <div className={classes.sectionMobile}>
-            <Drawer />
+            <MobileNavbar />
           </div>
           <div className={classes.sectionDesktop}>
             <Grid container>
@@ -123,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
                   href="/shopping-card" 
                   className={classes.link } 
                   style={{textDecoration:'none'}}>
-                  MENU
+                 RECETTES
                 </Link>
               </Grid>
               <Grid item>
@@ -139,9 +143,11 @@ const useStyles = makeStyles((theme) => ({
             </Grid>
           </div>
           <div className={classes.grow} />
-          <Typography className={classes.title} variant="h6">
-            cool
-          </Typography>
+          <Link href='/'color="inherit" underline="none">
+            <Typography className={classes.title} variant="h6">
+              cool
+            </Typography>
+          </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <Grid container>
@@ -166,7 +172,7 @@ const useStyles = makeStyles((theme) => ({
                 </Link>
               </Grid>
               <Grid item>
-                {!isAuthenticated?<Link
+                {!props.user.isAuthenticated?<Link
               variant="button" 
               color="textPrimary" 
               href="/login" 
@@ -190,3 +196,11 @@ const useStyles = makeStyles((theme) => ({
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  user: state.user
+ });
+
+ export default connect(
+   mapStateToProps,
+   null
+ )(NavBar);

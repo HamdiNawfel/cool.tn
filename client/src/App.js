@@ -1,3 +1,4 @@
+
 import React from 'react';
 import './App.css';
 //redux set up
@@ -17,6 +18,7 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import { logoutUser, getUser} from './redux/actions/userAction';
 import { SET_AUTHENTICATED } from './redux/types'
+const dotenv = require('dotenv').config()
 
 const token = localStorage.token;
 if(token){

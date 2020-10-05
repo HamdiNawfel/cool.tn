@@ -1,10 +1,11 @@
-import React from 'react';
+import React , {useEffect }from 'react';
 import FacebookLogin from 'react-facebook-login';
 import FacebookIcon from '@material-ui/icons/Facebook';
 //set up redux
 import { connect } from 'react-redux';
 import { authUser } from '../../../redux/actions/userAction';
 
+const REACT_APP_FACEBOOK_APP_ID = process.env.REACT_APP_FACEBOOK_APP_ID
 function LoginWithFacebook(props) {
     const responseFacebook = (res) => {
 
@@ -16,15 +17,17 @@ function LoginWithFacebook(props) {
           }
          props.authUser(userData);
       }
-    
+      useEffect(() => {
+        console.log(REACT_APP_FACEBOOK_APP_ID)
+      }, []);
     return (
         <FacebookLogin
         size={"medium"}
         textButton={"Se connecter avec Facebook"}
         cssClass="btnFacebook"
         icon={<FacebookIcon style={{marginRight:20,verticalAlign:"middle"}} />}
-        appId="411415366504479"
-        // autoLoad={true}
+        appId={REACT_APP_FACEBOOK_APP_ID}
+        // autoLoad={true} REACT_APP_FACEBOOK_APP_ID
         fields="email, name, picture"
         // onClick={componentClicked}
         callback={responseFacebook} />

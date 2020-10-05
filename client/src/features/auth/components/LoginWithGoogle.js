@@ -1,5 +1,6 @@
-import React from 'react';
+import React , {useEffect }from 'react';
 import GoogleLogin from 'react-google-login';
+
 //mui
 import { makeStyles } from '@material-ui/core/styles';
 //set up redux
@@ -13,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
       }
   }));
 
+  const REACT_APP_GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 function LoginWithGoogle(props) {
     const classes = useStyles();
     const responseGoogle = (res) => {
@@ -23,10 +25,12 @@ function LoginWithGoogle(props) {
            imageUrl : res.profileObj.imageUrl
          }
         props.authUser(userData);
+        
       }
+    
     return (
          <GoogleLogin
-            clientId="548071624982-8evpidb1kifm0j7fli24do44mf1nsoud.apps.googleusercontent.com"
+            clientId={REACT_APP_GOOGLE_CLIENT_ID}
             className={classes.loginButton}
             buttonText="Se connecter avec Google"
             onSuccess={responseGoogle}

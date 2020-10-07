@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:'#ffa400',
     boxShadow: '0 0 40px #ffa400, 0 0 20px #ffa400, 0 0 60px #ffa400',
     [theme.breakpoints.down('xs')]: {
-      top:-130,
+      top:-80,
       },
    },
    text: {

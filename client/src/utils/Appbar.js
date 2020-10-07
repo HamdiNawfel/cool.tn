@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
      flexGrow: 1,
      maxWidth: '100%',
      overflowX: 'hidden',
+    
   },
   shippingInfo: {
     width:'100%',
@@ -41,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
    padding:'0 10px 0 10px',
    color:' #fff',
    backgroundColor:'#ffa400',
-   marginLeft:-50,
    boxShadow: '0 0 5px #ffa400, 0 0 20px #ffa400, 0 0 60px #ffa400',
    [theme.breakpoints.up('md')]: {
     marginLeft:50,
@@ -133,9 +133,11 @@ function NavBar(props) {
           </div>
           <div className={classes.grow} />
           <Link href='/'color="inherit" underline="none">
-            <Typography className={classes.title} variant="h6">
-              cool
-            </Typography>
+           <div style={{marginRight:40}}>
+              <Typography className={classes.title} variant="h6">
+                cool
+              </Typography>
+              </div>
           </Link>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

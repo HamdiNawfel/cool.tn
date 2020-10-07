@@ -43,7 +43,11 @@ function RecentOrder(props) {
           ))}
         </TableBody>
       </Table>
+      {props.user.orders.length === 0?
+      <div style={{textAlign:'center', margin:'10px'}}>Aucune commande n’a encore été passée</div>:null
+    }
     </TableContainer>
+  
   );
 }
 

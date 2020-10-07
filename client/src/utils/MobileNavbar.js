@@ -104,7 +104,7 @@ const handleClose = () => {
   return (
     <div  >
       <React.Fragment>
-        <IconButton   style={{marginRight:50, color:'#000'}} onClick={toggleDrawer}>
+        <IconButton   style={{marginRight:0, color:'#000'}} onClick={toggleDrawer}>
           <MenuIcon  style={{color:"#fff",opacity:0.9}}/>
         </IconButton>
         <Drawer

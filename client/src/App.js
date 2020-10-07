@@ -20,7 +20,7 @@ import { logoutUser, getUser} from './redux/actions/userAction';
 import { SET_AUTHENTICATED } from './redux/types'
 const dotenv = require('dotenv').config()
 
-const token = localStorage.token;
+const token = localStorage.jwtToken;
 if(token){
   const decodedToken = jwtDecode(token);
   if(decodedToken.exp * 1000 < Date.now()){

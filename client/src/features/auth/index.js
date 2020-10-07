@@ -205,7 +205,7 @@ function AuthUser(props) {
               </Typography>
                 <form className={classes.form} onSubmit={handleLoginUser}>
                 
-                <LoginWithFacebook />
+                {/* <LoginWithFacebook /> */}
                 <LoginWithGoogle />
                 <Grid container style={{margin:'30px 0'}}>
                     <Grid item xs={2} sm={5} style={{marginTop:8}}>

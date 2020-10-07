@@ -79,7 +79,6 @@ function Profile(props) {
   const classes = useStyles();
   useEffect(() => {
     props.getUser()
-    
 }, []);
   const handleLogout = () => { 
       props.logoutUser()

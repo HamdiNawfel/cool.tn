@@ -8,13 +8,13 @@ const Product = require("../models/product");
 **************************************************************************/
 exports.createProduct = (req, res, next) => {
 
-  const title = req.body.title;
+  const name = req.body.name;
   const categorie = req.body.categorie;
   const price = req.body.price;
   const quantity = req.body.quantity;
 
   const newProduct = new Product({
-    title,
+    name,
     categorie,
     price,
     quantity,
@@ -65,7 +65,7 @@ exports.getProduct = (req, res) => {
 exports.updateProduct = (req, res, next) => {
   const productUpdate =
     {
-      title: req.body.title,
+      name: req.body.name,
       categorie: req.body.categorie,
       price: req.body.price,
       quantity:req.body.quantity,

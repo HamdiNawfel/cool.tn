@@ -159,7 +159,7 @@ function Cart(props) {
                     </Grid>
                     <Grid item className={classes.textContainer}>
                         <Typography className={classes.title}>
-                            {item.title}
+                            {item.name}
                         </Typography>
                       
                     </Grid>

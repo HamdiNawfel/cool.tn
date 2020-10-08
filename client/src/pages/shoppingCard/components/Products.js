@@ -132,7 +132,7 @@ function Products(props) {
                     <CardMedia
                       className={classes.cardMedia}
                       image={item.imageUrl}
-                      title={item.title}
+                      title={item.name}
                     />
                     <div className={classes.description}>
                     </div>                  

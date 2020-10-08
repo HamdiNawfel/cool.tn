@@ -150,7 +150,7 @@ function Products(props) {
                     <Grid container style={{padding:10}}>
                       <Grid item xs={8}>
                         <Typography className={classes.title}>
-                        {item.title}
+                        {item.name}
                         </Typography>
                       </Grid>
                       <Grid item xs={4}>

@@ -13,7 +13,7 @@ const orderRoutes = require("./routes/order");
 const subscriberRoutes = require("./routes/subscriber");
 const userRoutes = require("./routes/user");
 
-
+//add some comment to test git 
 // Connect to MongoDB
   mongoose
   .connect(process.env.mongoURI, {
@@ -26,7 +26,6 @@ const userRoutes = require("./routes/user");
   console.log(`DB Connection Error: ${err.message}`);
   });
 //middleware setup
-
 // upload file middlware -folder
 app.use('/uploads',express.static(path.join(__dirname,'uploads')));
 // cors middleware
@@ -56,7 +55,6 @@ app.use("/api/products", productRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/subscriber", subscriberRoutes);
 app.use("/api", userRoutes);
-
 
 // Production set up
 if (process.env.NODE_ENV === 'production') {

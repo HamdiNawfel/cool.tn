@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   hover: {
     '&:hover': {
-      color: fade('#cf7500', 1),
+      color: fade('#dc3545', 1),
     },
   }
 }));
@@ -108,6 +108,7 @@ const handleClose = () => {
           <MenuIcon  style={{color:"#fff",opacity:0.9}}/>
         </IconButton>
         <Drawer
+              
               anchor='left'
               open={open}
             >

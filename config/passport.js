@@ -2,9 +2,6 @@ require('dotenv').config()
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
-//var passport = require('passport');
-// var Strategy = require('passport-facebook').Strategy;
-
 const mongoose = require('mongoose');
 const User = mongoose.model("users");
 
